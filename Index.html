@@ -1,240 +1,94 @@
-doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Simple Login</title>
+  <meta charset="UTF-8">
+  <title>Login Page</title>
   <style>
-    :root{
-      --bg:#0f1724;
-      --card:#0b1220;
-      --accent:#60a5fa;
-      --muted:#9aa8bf;
-      --success:#10b981;
-      --danger:#ef4444;
+    /* 1. Define variables and basic layout */
+    :root {
+      --success: #10b981;
+      --primary: #3b82f6;
+      --bg: #f3f4f6;
     }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      background:linear-gradient(180deg,#071025 0%, #0b1830 100%);
-      color:#e6eef8;
-      padding:24px;
+
+    body { 
+      font-family: system-ui, sans-serif; 
+      background: var(--bg); 
+      display: flex; 
+      justify-content: center; 
+      padding-top: 50px; 
     }
-    .card{
-      width:100%;
-      max-width:420px;
-      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border:1px solid rgba(255,255,255,0.04);
-      border-radius:12px;
-      padding:28px;
-      box-shadow: 0 6px 30px rgba(2,6,23,0.6);
+
+    /* 2. Style the card */
+    .card {
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
     }
-    h1{
-      margin:0 0 8px 0;
-      font-size:20px;
-      letter-spacing:0.2px;
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin: 8px 0 16px 0;
+      display: block;
+      box-sizing: border-box;
     }
-    p.lead{
-      margin:0 0 20px 0;
-      color:var(--muted);
-      font-size:13px;
+
+    .btn {
+      width: 100%;
+      padding: 10px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
     }
-    label{
-      display:block;
-      font-size:13px;
-      margin-bottom:6px;
-      color:#cfe5ff;
-    }
-    input[type="text"], input[type="password"]{
-      width:100%;
-      padding:10px 12px;
-      border-radius:8px;
-      border:1px solid rgba(255,255,255,0.06);
-      background: rgba(255,255,255,0.02);
-      color:inherit;
-      outline:none;
-      font-size:14px;
-      margin-bottom:14px;
-      transition:box-shadow .15s, border-color .15s;
-    }
-    input:focus{
-      box-shadow:0 0 0 4px rgba(96,165,250,0.12);
-      border-color:var(--accent);
-    }
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      width:100%;
-      padding:10px 12px;
-      border-radius:10px;
-      background:linear-gradient(90deg,var(--accent),#3b82f6);
-      color:#04203a;
-      font-weight:600;
-      border:none;
-      cursor:pointer;
-      font-size:15px;
-    }
-    .btn:active{transform:translateY(1px)}
-    .message{
-      margin-top:16px;
-      padding:12px;
-      border-radius:8px;
-      font-size:14px;
-      display:none;
-    }
-    .message.error{
-      background: linear-gradient(90deg, rgba(239,68,68,0.12), rgba(239,68,68,0.06));
-      border:1px solid rgba(239,68,68,0.12);
-      color:var(--danger);
-    }
-    .message.success{
-      display:block;
+
+    /* 3. Your original message styles */
+    .message { display: none; margin-top: 1rem; padding: 1rem; border-radius: 4px; }
+    
+    .message.success {
+      display: block;
       background: linear-gradient(90deg, rgba(16,185,129,0.06), rgba(16,185,129,0.02));
-      border:1px solid rgba(16,185,129,0.12);
-      color:var(--success);
-    }
-    .greeting{
-      display:none;
-      text-align:center;
-    }
-    .greeting h2{
-      margin:14px 0 6px 0;
-      font-size:22px;
-      color:#e6f8ff;
-    }
-    .greeting p{margin:0;color:var(--muted)}
-    .small{
-      font-size:12px;color:var(--muted);margin-top:10px;text-align:center;
-    }
-    .shake{
-      animation: shake .35s ease;
-    }
-    @keyframes shake{
-      0%{transform:translateX(0)}
-      25%{transform:translateX(-6px)}
-      50%{transform:translateX(6px)}
-      75%{transform:translateX(-4px)}
-      100%{transform:translateX(0)}
-    }
-    footer{margin-top:14px;font-size:12px;color:var(--muted);text-align:center}
-    @media (max-width:420px){
-      .card{padding:18px}
-      h1{font-size:18px}
+      border: 1px solid rgba(16,185,129,0.12);
+      color: var(--success);
     }
   </style>
 </head>
 <body>
-  <div class="card" role="main" aria-labelledby="title">
-    <h1 id="title">Welcome — please sign in</h1>
-    <p class="lead">Enter your name and the password. (Password must be exactly "hiii")</p>
 
-    <form id="loginForm" autocomplete="off" novalidate>
-      <label for="name">Your name</label>
-      <input id="name" name="name" type="text" placeholder="e.g. Alice" required aria-required="true" />
-
+  <div class="card">
+    <h1>Welcome back</h1>
+    <p class="lead">Enter your credentials to access your account.</p>
+    
+    <form id="loginForm">
+      <label for="username">Username</label>
+      <input type="text" id="username" placeholder="e.g. alex_doe" required>
+      
       <label for="password">Password</label>
-      <input id="password" name="password" type="password" placeholder="password" required aria-required="true" />
-
-      <button class="btn" type="submit" aria-label="Sign in">Sign in</button>
-
-      <div id="msg" class="message error" role="status" aria-live="polite"></div>
+      <input type="password" id="password" placeholder="••••••••" required>
+      
+      <button type="submit" class="btn">Sign In</button>
     </form>
 
-    <div id="greeting" class="greeting" role="status" aria-live="polite">
-      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <circle cx="12" cy="12" r="11" stroke="rgba(96,165,250,0.16)" stroke-width="1.5" />
-        <path d="M8 13c1.333-1 3.333-1 4.667 0" stroke="#60a5fa" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M12 8.5v.01" stroke="#60a5fa" stroke-width="1.8" stroke-linecap="round" />
-        <path d="M16 8.5v.01" stroke="#60a5fa" stroke-width="1.8" stroke-linecap="round" />
-      </svg>
-      <h2 id="greetText">Hi!</h2>
-      <p id="greetSub">You're now logged in.</p>
-      <div class="small">This is a client-side demo — not a real authentication system.</div>
-    </div>
-
-    <footer>
-      Password required: <strong>"hiii"</strong> (case-sensitive)
-    </footer>
+    <div id="statusMessage" class="message"></div>
   </div>
 
   <script>
-    (function(){
-      const REQUIRED_PASSWORD = "hiii"; // exact required password (case-sensitive)
-      const form = document.getElementById('loginForm');
-      const nameInput = document.getElementById('name');
-      const passInput = document.getElementById('password');
-      const msg = document.getElementById('msg');
-      const greeting = document.getElementById('greeting');
-      const greetText = document.getElementById('greetText');
+    const form = document.getElementById('loginForm');
+    const status = document.getElementById('statusMessage');
 
-      function showError(text){
-        msg.className = 'message error';
-        msg.textContent = text;
-        msg.style.display = 'block';
-        form.classList.remove('shake');
-        // add shake animation
-        void form.offsetWidth;
-        form.classList.add('shake');
-      }
-
-      function clearError(){
-        msg.style.display = 'none';
-        msg.textContent = '';
-        form.classList.remove('shake');
-      }
-
-      function showGreeting(name){
-        greetText.textContent = 'Hi, ' + name + '!';
-        greeting.style.display = 'block';
-      }
-
-      form.addEventListener('submit', function(e){
-        e.preventDefault();
-        clearError();
-
-        const name = nameInput.value.trim();
-        const pass = passInput.value;
-
-        if(!name){
-          showError('Please enter your name.');
-          nameInput.focus();
-          return;
-        }
-        if(!pass){
-          showError('Please enter the password.');
-          passInput.focus();
-          return;
-        }
-
-        if(pass === REQUIRED_PASSWORD){
-          // successful login
-          // hide form and show greeting
-          form.style.display = 'none';
-          showGreeting(name);
-        }else{
-          showError('Wrong password. Please use the exact password "hiii".');
-          passInput.select();
-        }
-      });
-
-      // optional: allow Enter in password to submit
-      passInput.addEventListener('keydown', function(e){
-        if(e.key === 'Enter'){
-          form.requestSubmit();
-        }
-      });
-
-      // Accessibility: clear message when user types
-      nameInput.addEventListener('input', clearError);
-      passInput.addEventListener('input', clearError);
-    })();
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const user = document.getElementById('username').value;
+      
+      status.style.display = 'block';
+      status.className = 'message success';
+      status.textContent = `Welcome, ${user}! Authentication successful.`;
+    });
   </script>
 </body>
 </html>
