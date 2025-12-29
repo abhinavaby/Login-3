@@ -7,6 +7,7 @@
   <style>
     :root {
       --success: #10b981;
+      --error: #ef4444;
       --primary: #3b82f6;
       --bg: #f3f4f6;
     }
@@ -65,6 +66,13 @@
       border: 1px solid var(--success);
       color: #065f46;
     }
+
+    .message.error {
+      display: block;
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid var(--error);
+      color: #991b1b;
+    }
   </style>
 </head>
 <body>
@@ -93,10 +101,19 @@
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       const user = document.getElementById('username').value;
+      const pass = document.getElementById('password').value;
       
       status.style.display = 'block';
-      status.className = 'message success';
-      status.textContent = `Welcome, ${user}! Authentication successful.`;
+
+      if (pass === "1234") {
+        status.className = 'message success';
+        status.textContent = "Redirecting...";
+        // Redirect to the specified URL
+        window.location.href = "https://abhinavaby.github.io/omega-optimists-web/index.html";
+      } else {
+        status.className = 'message error';
+        status.textContent = "Wrong password. Please try again.";
+      }
     });
   </script>
 </body>
