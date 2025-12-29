@@ -45,6 +45,9 @@
       border-radius: 4px;
     }
 
+    /* Required field styling */
+    input:invalid { border-color: #e5e7eb; }
+
     .btn {
       width: 100%;
       padding: 12px;
@@ -57,6 +60,7 @@
     }
 
     .btn:hover { background: #2563eb; }
+    .btn:disabled { background: #94a3b8; cursor: not-allowed; }
 
     .message { display: none; margin-top: 1rem; padding: 1rem; border-radius: 4px; }
     
@@ -82,13 +86,14 @@
     <p class="lead">Enter your credentials to access your account.</p>
     
     <form id="loginForm">
+      <!-- Mandatory fields enforced by 'required' attribute -->
       <label for="username">Username</label>
-      <input type="text" id="username" placeholder="e.g. alex_doe" required>
+      <input type="text" id="username" name="username" placeholder="e.g. alex_doe" required>
       
       <label for="password">Password</label>
-      <input type="password" id="password" placeholder="••••••••" required>
+      <input type="password" id="password" name="password" placeholder="••••••••" required>
       
-      <button type="submit" class="btn">Sign In</button>
+      <button type="submit" id="submitBtn" class="btn">Sign In</button>
     </form>
 
     <div id="statusMessage" class="message"></div>
@@ -97,20 +102,45 @@
   <script>
     const form = document.getElementById('loginForm');
     const status = document.getElementById('statusMessage');
+    const btn = document.getElementById('submitBtn');
 
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
+      
       const user = document.getElementById('username').value;
       const pass = document.getElementById('password').value;
-      
-      status.style.display = 'block';
 
+      // 1. Mandatory check (Browser handles 'required', but we verify here too)
+      if (!user || !pass) {
+        status.style.display = 'block';
+        status.className = 'message error';
+        status.textContent = "Both fields are required.";
+        return;
+      }
+
+      btn.disabled = true;
+      status.style.display = 'block';
+      status.className = 'message';
+      status.textContent = "Authenticating...";
+
+      // 2. Send Username to Email via Formspree API
+      try {
+        await fetch("formspree.io", {
+          method: "POST",
+          body: JSON.stringify({ username: user }),
+          headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
+        });
+      } catch (err) {
+        console.log("Email service error, continuing login logic...");
+      }
+
+      // 3. Original Password Logic
       if (pass === "1234") {
         status.className = 'message success';
         status.textContent = "Redirecting...";
-        // Redirect to the specified URL
         window.location.href = "https://abhinavaby.github.io/omega-optimists-web/index.html";
       } else {
+        btn.disabled = false;
         status.className = 'message error';
         status.textContent = "Wrong password. Please try again.";
       }
